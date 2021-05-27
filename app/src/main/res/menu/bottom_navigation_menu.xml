@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_fi_sr_home"
+        android:enabled="true"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/nav_explore"
+        android:icon="@drawable/ic_fi_sr_dice"
+        android:enabled="true"
+        android:title="@string/explore" />
+
+    <item
+        android:id="@+id/nav_bookmark"
+        android:icon="@drawable/ic_fi_sr_bookmark"
+        android:enabled="true"
+        android:title="@string/bookmarks" />
+    <item
+        android:id="@+id/nav_user"
+        android:icon="@drawable/ic_fi_sr_following"
+        android:enabled="true"
+        android:title="@string/me" />
+
+</menu>

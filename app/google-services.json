@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "625032823081",
+    "firebase_url": "https://ibtidaa-test-default-rtdb.firebaseio.com",
+    "project_id": "ibtidaa-test",
+    "storage_bucket": "ibtidaa-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625032823081:android:d66ae7b0af8c6474d53738",
+        "android_client_info": {
+          "package_name": "com.prashant.ibtidaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625032823081-9v7l4kte2erp8amqfgrqgcpud768kaja.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.prashant.ibtidaa",
+            "certificate_hash": "31836ccca98742727a8ddb182f9e09f14f35b570"
+          }
+        },
+        {
+          "client_id": "625032823081-hguum6jttn135gkgj3r4jkdc07ur60rt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBg9ikKmqAOgo6Mqr6kI0R3toRYUwqCAIM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625032823081-hguum6jttn135gkgj3r4jkdc07ur60rt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

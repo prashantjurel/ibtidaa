@@ -1,0 +1,28 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
+        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/muli</item>
+        <item name="colorPrimary">#FFEA00</item>
+        <item name="colorPrimaryDark">#191919</item>
+        <item name="colorAccent">#609FF1</item>
+        <item name="colorOnSurface">@color/white</item>
+    </style>
+    <style name="BottomSheetDialogeTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+    </style>
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@color/black</item>
+    </style>
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@drawable/background_divider</item>
+    </style>
+    <style name="error_appearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/brightRed</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+
+</resources>

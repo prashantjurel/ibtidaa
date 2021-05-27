@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="hintColor">#696969</color>
+    <color name="orange">#FF6D5A</color>
+    <color name="grey">#202020</color>
+    <color name="yellow">#FFEA00</color>
+    <color name="brightRed">#DF4866</color>
+    <color name="mtrl_textinput_default_box_stroke_color">#00FFFFFF</color>
+</resources>
