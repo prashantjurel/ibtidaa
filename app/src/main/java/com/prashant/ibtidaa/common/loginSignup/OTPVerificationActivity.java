@@ -21,10 +21,12 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.prashant.ibtidaa.Database.UserDataHelperClass;
 import com.prashant.ibtidaa.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,15 +34,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
+import static com.prashant.ibtidaa.common.loginSignup.LoginActivity.encodeUserEmail;
 
 public class OTPVerificationActivity extends Activity {
 
-    private TextView phoneNumber;
+    private TextView phoneNumberView;
     private PinView pinview;
     private FirebaseAuth mAuth;
     private String codeBySystem;
     private Button confirmSignUp;
     private ImageView onCloseButton;
+    String phoneNumber, fullName,emailAddress,password,typeOfCall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +66,21 @@ public class OTPVerificationActivity extends Activity {
         // [END initialize_auth]
 
         //Hooks
-        phoneNumber = findViewById(R.id.phoneNumberAtOtpVerify);
+        phoneNumberView = findViewById(R.id.phoneNumberAtOtpVerify);
         pinview = findViewById(R.id.pin_view);
         confirmSignUp = findViewById(R.id.confirmSignup);
         onCloseButton = findViewById(R.id.verificationOtp_back);
 
-        String phoneNumberPassed = "+91"+getIntent().getExtras().getString("phone_number");
-        String firstNamePassed = getIntent().getExtras().getString("first_name");
-        String lastNamePassed = getIntent().getExtras().getString("last_name");
-        String emailAddressPassed = getIntent().getExtras().getString("email_address");
-        String passwordPassed = getIntent().getExtras().getString("password");
+        //get all the data from intent
+        phoneNumber = getIntent().getExtras().getString("phone_number");
+        fullName = getIntent().getExtras().getString("full_name");
+        emailAddress = getIntent().getExtras().getString("email_address");
+        password = getIntent().getExtras().getString("password");
+        typeOfCall = getIntent().getExtras().getString("typeOfCall");
 
-        phoneNumber.setText(phoneNumberPassed);
+        phoneNumberView.setText(phoneNumber);
 
-        sendVerificationCodeToUser(phoneNumberPassed);
+        sendVerificationCodeToUser(phoneNumber);
 
         confirmSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,14 +101,9 @@ public class OTPVerificationActivity extends Activity {
             }
         });
 
-
-
-
-
     }
 
     private void sendVerificationCodeToUser(String phoneNumberPassed) {
-
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(mAuth)
                         .setPhoneNumber(phoneNumberPassed)       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS)// Timeout and unit
@@ -148,11 +148,12 @@ public class OTPVerificationActivity extends Activity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            Toast.makeText(OTPVerificationActivity.this, "Verification Completed", Toast.LENGTH_SHORT).show();
-                            FirebaseUser user = task.getResult().getUser();
-                            // Update UI
+                            if(typeOfCall.equals("updatePassword")){
+                                updateOldUserPassword();
+                            }
+                            else{
+                                phoneNumber="+91"+phoneNumber;
+                                storeNewUserData();}
                         } else {
                             // Sign in failed, display a message and update the UI
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -164,5 +165,23 @@ public class OTPVerificationActivity extends Activity {
                 });
     }
 
+    private void updateOldUserPassword() {
+        Intent intent = new Intent(getApplicationContext(),SetNewPasswordActivity.class);
+        intent.putExtra("email_address",emailAddress);
+        startActivity(intent);
+        finish();
 
+    }
+
+    private void storeNewUserData() {
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+
+        emailAddress = encodeUserEmail(emailAddress);
+
+        UserDataHelperClass addNewUser = new UserDataHelperClass(fullName, emailAddress, phoneNumber,password);
+
+        databaseReference.child(emailAddress).setValue(addNewUser);
+
+    }
 }

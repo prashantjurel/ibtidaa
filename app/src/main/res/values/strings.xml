@@ -82,7 +82,7 @@
     <string name="err_email">Please double check your email</string>
     <string name="err_Password">Your password must contain at least 8 characters. Please fulfill all the below criteria:\n\nAt least one lower-case letter\n\nAt least one upper-case letter\n\nAt least one number\n\nAt least one special character</string>
     <string name="sign_up_description">Create an account to enjoy podcast, ghazals, nazm, shayari and more.</string>
-    <string name="existing_account">Already have an account?</string>
+    <string name="existing_account">Already have an account? </string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email_address">Email Address</string>
@@ -99,6 +99,13 @@
     <string name="verification">Verification</string>
     <string name="confirm">Confirm</string>
     <string name="quit">Quit</string>
+    <string name="err_fullName">Please check your name again</string>
+    <string name="full_name">Full Name</string>
+    <string name="key_image">key Image</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="password_reset_description">Provide your email, we will be sending OTP on your registered phone number to verify</string>
+    <string name="new_password">New Password (8+ characters)</string>
+    <string name="account_verified_description">Your account was verified. Please set your new password</string>
 
 
 </resources>

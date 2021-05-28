@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,13 +30,14 @@ import com.prashant.ibtidaa.R;
 
 import org.jetbrains.annotations.NotNull;
 
-public class LoginActivity extends AppCompatActivity {
+import static com.prashant.ibtidaa.common.loginSignup.LoginActivity.encodeUserEmail;
 
-    private TextInputLayout emailAddress, password;
-    private LinearLayout progressBar;
-    private Button loginBtn;
+public class ForgotPasswordActivity extends AppCompatActivity {
+
+    private TextInputLayout emailAddress;
+    private Button nextBtn;
     private AwesomeValidation mAwesomeValidation;
-    private TextView forgotPassword;
+    private LinearLayout progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,59 +45,44 @@ public class LoginActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT < 16) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
+        }
+        else{
             View decorView = getWindow().getDecorView();
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
             decorView.setSystemUiVisibility(uiOptions);
         }
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_forgot_password);
 
-
-        emailAddress = findViewById(R.id.loginEmailAddress);
-        password = findViewById(R.id.loginPassword);
-        progressBar = findViewById(R.id.loginProgressBar);
-        loginBtn = findViewById(R.id.loginButton);
-        forgotPassword = findViewById(R.id.forgotPassword);
-
+        //hooks
+        emailAddress = findViewById(R.id.forgotPasswordEmail);
+        nextBtn = findViewById(R.id.forgotPasswordNextBtn);
+        progressBar = findViewById(R.id.forgotPasswordProgressBar);
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
         mAwesomeValidation.setTextInputLayoutErrorTextAppearance(R.style.error_appearance);
 
-        //Add Validations for text Fields Before Submission
+        String phoneNumberValidation = "^[6-9]\\d{9}$";
         mAwesomeValidation.addValidation(this, R.id.loginEmailAddress, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
-        String regexPassword = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
-        mAwesomeValidation.addValidation(this, R.id.loginPassword, regexPassword, R.string.err_Password);
 
-        //On click function on login button
-        loginBtn.setOnClickListener(new View.OnClickListener() {
+        nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                letTheUserLoggedIn(view);
+                verifyEmailAddress(view);
             }
         });
-
-
-        //On click function on forgot password
-        forgotPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),ForgotPasswordActivity.class));
-            }
-        });
-
 
     }
 
-    private void letTheUserLoggedIn(View view) {
+    private void verifyEmailAddress(View view) {
 
         if (!isConnectedToInternet()) {
             showConnectToInternetDialog();
         }
-        if (mAwesomeValidation.validate()) {
+
+        if(mAwesomeValidation.validate()){
             progressBar.setVisibility(View.VISIBLE);
             //get data
             String emailAddressInput = emailAddress.getEditText().getText().toString().trim();
-            String passwordInput = password.getEditText().getText().toString().trim();
             emailAddressInput = encodeUserEmail(emailAddressInput);
 
             //set data in database
@@ -109,21 +94,19 @@ public class LoginActivity extends AppCompatActivity {
                     if (snapshot.exists()) {
                         emailAddress.setError(null);
                         emailAddress.setErrorEnabled(false);
+                        String phoneNumber = snapshot.child(finalEmailAddressInput).child("phoneNumber").getValue(String.class);
 
-                        String systemPassword = snapshot.child(finalEmailAddressInput).child("password").getValue(String.class);
-                        if (systemPassword.equals(passwordInput)) {
-                            password.setError(null);
-                            password.setErrorEnabled(false);
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(LoginActivity.this, "Successfully Logged In", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(),OTPVerificationActivity.class);
+                        intent.putExtra("phone_number",phoneNumber);
+                        intent.putExtra("email_address",finalEmailAddressInput);
+                        intent.putExtra("typeOfCall","updatePassword");
+                        startActivity(intent);
+                        finish();
+                        progressBar.setVisibility(View.GONE);
 
-                        } else {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(LoginActivity.this, "Password does not match with our records", Toast.LENGTH_SHORT).show();
-                        }
                     } else {
                         progressBar.setVisibility(View.GONE);
-                        Toast.makeText(LoginActivity.this, "Email is not registered with us.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ForgotPasswordActivity.this, "Email is not registered with us.", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -131,25 +114,17 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onCancelled(@NonNull @NotNull DatabaseError error) {
                     progressBar.setVisibility(View.GONE);
-                    Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgotPasswordActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
         }
-    }
 
-    public void redirectToSignup(View view) {
-        Intent intent = new Intent(getApplicationContext(), SignUpScreenActivity.class);
-        startActivity(intent);
-    }
-
-    public static String encodeUserEmail(String userEmail) {
-        return userEmail.replace(".", ",");
     }
 
     /*Checking For Internet Connection*/
     private boolean isConnectedToInternet() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) LoginActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) ForgotPasswordActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         if ((activeNetwork != null) && ((activeNetwork.getType() == ConnectivityManager.TYPE_WIFI) || (activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE))) {
             return true;
@@ -159,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void showConnectToInternetDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ForgotPasswordActivity.this);
         builder.setMessage("Please connect to internet to proceed further.")
                 .setCancelable(false)
                 .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
@@ -171,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivity(new Intent(getApplicationContext(), SignUpScreenActivity.class));
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                         finish();
                     }
                 });

@@ -49,7 +49,7 @@ public class SignUpScreenActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private SignInButton signInButton;
     private AwesomeValidation mAwesomeValidation;
-    private TextInputLayout firstName,lastName,emailAddress,password,phoneNumber;
+    private TextInputLayout fullName,emailAddress,password,phoneNumber;
     private Button createAccountButton;
 
     @Override
@@ -73,8 +73,7 @@ public class SignUpScreenActivity extends AppCompatActivity {
         //Hooks
         fbLoginButton = findViewById(R.id.sign_in_button_fb);
         signInButton = findViewById(R.id.sign_in_button_gmail);
-        firstName = findViewById(R.id.signUpFirstName);
-        lastName = findViewById(R.id.signUpLastName);
+        fullName = findViewById(R.id.signUpFullName);
         emailAddress = findViewById(R.id.signUpEmailAddress);
         password = findViewById(R.id.signUpPassword);
         createAccountButton = findViewById(R.id.createAccount);
@@ -87,8 +86,7 @@ public class SignUpScreenActivity extends AppCompatActivity {
         mAwesomeValidation.setTextInputLayoutErrorTextAppearance(R.style.error_appearance);
 
         //Add Validations for text Fields Before Submission
-        mAwesomeValidation.addValidation(this, R.id.signUpFirstName, "[a-zA-Z\\s]+", R.string.err_firstName);
-        mAwesomeValidation.addValidation(this, R.id.signUpLastName, "[a-zA-Z\\s]+", R.string.err_lastName);
+        mAwesomeValidation.addValidation(this, R.id.signUpFullName, "[a-zA-Z\\s]+", R.string.err_fullName);
         mAwesomeValidation.addValidation(this, R.id.signUpEmailAddress, android.util.Patterns.EMAIL_ADDRESS, R.string.err_email);
         String phoneNumberValidation = "^[6-9]\\d{9}$";
         mAwesomeValidation.addValidation(this,R.id.signUpPhoneNumber,phoneNumberValidation,R.string.err_phone);
@@ -160,8 +158,7 @@ public class SignUpScreenActivity extends AppCompatActivity {
         if(mAwesomeValidation.validate()){
             Log.d("testing","test");
             Intent intent = new Intent(SignUpScreenActivity.this,OTPVerificationActivity.class);
-            intent.putExtra("first_name",firstName.getEditText().getText().toString().trim());
-            intent.putExtra("last_name",lastName.getEditText().getText().toString().trim());
+            intent.putExtra("full_name",fullName.getEditText().getText().toString().trim());
             intent.putExtra("phone_number",phoneNumber.getEditText().getText().toString().trim());
             intent.putExtra("email_address",emailAddress.getEditText().getText().toString().trim());
             intent.putExtra("password",password.getEditText().getText().toString().trim());

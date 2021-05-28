@@ -1,6 +1,5 @@
 package com.prashant.ibtidaa;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -10,7 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.prashant.ibtidaa.common.loginSignup.SignUpScreenActivity;
+import com.prashant.ibtidaa.HomeScreenFragments.BookmarkFragment;
+import com.prashant.ibtidaa.HomeScreenFragments.DashboardFragment;
+import com.prashant.ibtidaa.HomeScreenFragments.ExploreFragment;
+import com.prashant.ibtidaa.HomeScreenFragments.UserFragment;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,8 +39,7 @@ public class HomeActivity extends AppCompatActivity {
                     fragmentSelected = new ExploreFragment();
                     break;
                 case R.id.nav_bookmark:
-                    Intent intent = new Intent(getApplicationContext(), SignUpScreenActivity.class);
-                    startActivity(intent);
+                    fragmentSelected = new BookmarkFragment();
                     break;
                 case R.id.nav_user:
                     fragmentSelected = new UserFragment();

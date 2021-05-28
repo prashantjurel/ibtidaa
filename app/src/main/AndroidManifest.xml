@@ -13,13 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".common.loginSignup.OTPVerificationActivity"></activity>
+        <activity android:name=".common.loginSignup.PasswordUpdatedActivity"></activity>
+        <activity android:name=".common.loginSignup.SetNewPasswordActivity" />
+        <activity android:name=".common.loginSignup.ForgotPasswordActivity" />
+        <activity android:name=".common.loginSignup.OTPVerificationActivity" />
         <activity android:name=".common.loginSignup.LoginActivity" />
         <activity android:name=".common.loginSignup.SignUpScreenActivity" />
-        <activity android:name=".MusicPlayer" />
+        <activity android:name=".MusicPlayer.MusicPlayer" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".PodcastActivity" />
-        <activity android:name=".SubmitActivity" />
+        <activity android:name=".Submission.SubmitActivity" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop">
@@ -54,7 +56,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <service
-            android:name=".IbtidaaMessagingService"
+            android:name=".Notifications.IbtidaaMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
