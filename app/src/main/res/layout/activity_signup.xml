@@ -17,19 +17,17 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="#191919"
+            android:layout_height="wrap_content"
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/submit_form_header"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:gravity="center_horizontal"
-                android:text="@string/app_name"
+                android:layout_gravity="center"
+                android:text="@string/signup"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:layout_centerInParent="true"
+                android:textSize="25sp"
                 android:textStyle="bold" />
 
         </RelativeLayout>
@@ -50,15 +48,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="@string/signup"
-                    android:textColor="@color/white"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -191,6 +180,7 @@
                     app:boxStrokeColor="#00696969"
                     app:hintTextColor="@color/white"
                     app:boxStrokeErrorColor="#00696969"
+                    app:counterMaxLength="10"
                     app:errorTextColor="@color/brightRed"
                     app:errorTextAppearance="@style/error_appearance"
                     app:placeholderTextColor="@color/white">
@@ -270,18 +260,18 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="20dp">
+                android:gravity="center"
+                android:padding="10dp">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/createAccount"
-                    android:layout_width="match_parent"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_buttons"
-                    android:enabled="true"
-                    android:onClick="redirectToOtpVerification"
+                    android:padding="10dp"
+                    app:cornerRadius="10dp"
                     android:text="@string/create_an_account"
+                    android:textColor="@color/buttonTextColor"
                     android:textAllCaps="false"
-                    android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -289,8 +279,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -303,34 +292,36 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:padding="20dp"
+                android:orientation="horizontal">
 
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/sign_in_button_gmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1" />
+                    android:layout_width="60dp"
+                    android:layout_centerInParent="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center" />
 
                 <com.facebook.login.widget.LoginButton
                     android:id="@+id/sign_in_button_fb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1" />
+                    android:layout_width="60dp"
+                    android:layout_centerInParent="true"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"/>
 
                 <com.google.android.gms.common.SignInButton
                     android:id="@+id/sign_in_button_apple"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1" />
+                    android:layout_width="60dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center" />
 
-
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

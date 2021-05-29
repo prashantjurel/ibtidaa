@@ -9,6 +9,8 @@
     <color name="orange">#FF6D5A</color>
     <color name="grey">#202020</color>
     <color name="yellow">#FFEA00</color>
+    <color name="colorPrimaryUsed">#ffd538</color>
+    <color name="buttonTextColor">#633315</color>
     <color name="brightRed">#DF4866</color>
     <color name="mtrl_textinput_default_box_stroke_color">#00FFFFFF</color>
 </resources>

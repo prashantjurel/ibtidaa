@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,9 +36,10 @@ import static com.prashant.ibtidaa.common.loginSignup.LoginActivity.encodeUserEm
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     private TextInputLayout emailAddress;
-    private Button nextBtn;
+    private MaterialButton nextBtn;
     private AwesomeValidation mAwesomeValidation;
     private LinearLayout progressBar;
+    private ImageView backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         emailAddress = findViewById(R.id.forgotPasswordEmail);
         nextBtn = findViewById(R.id.forgotPasswordNextBtn);
         progressBar = findViewById(R.id.forgotPasswordProgressBar);
+        backBtn = findViewById(R.id.forgotPassword_back);
 
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.TEXT_INPUT_LAYOUT);
         mAwesomeValidation.setTextInputLayoutErrorTextAppearance(R.style.error_appearance);
@@ -68,6 +71,13 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 verifyEmailAddress(view);
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 

@@ -3,15 +3,15 @@ package com.prashant.ibtidaa.common.loginSignup;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.button.MaterialButton;
 import com.prashant.ibtidaa.R;
 
 public class PasswordUpdatedActivity extends AppCompatActivity {
 
-    private Button loginBtn;
+    private MaterialButton loginBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

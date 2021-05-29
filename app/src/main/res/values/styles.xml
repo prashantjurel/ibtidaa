@@ -3,11 +3,17 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar.Bridge">
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/muli</item>
-        <item name="colorPrimary">#FFEA00</item>
+        <item name="colorPrimary">#ffd538</item>
         <item name="colorPrimaryDark">#191919</item>
         <item name="colorAccent">#609FF1</item>
         <item name="colorOnSurface">@color/white</item>
     </style>
+    <style name="MyDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:background">#393939</item>
+        <item name="android:textColor">#D1D1D1</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+    </style>
+
     <style name="BottomSheetDialogeTheme" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>

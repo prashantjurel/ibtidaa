@@ -1,22 +1,26 @@
 package com.prashant.ibtidaa.common.loginSignup;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.chaos.view.PinView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,8 +46,9 @@ public class OTPVerificationActivity extends Activity {
     private PinView pinview;
     private FirebaseAuth mAuth;
     private String codeBySystem;
-    private Button confirmSignUp;
+    private MaterialButton confirmSignUp;
     private ImageView onCloseButton;
+    private LinearLayout otpProgressBtn;
     String phoneNumber, fullName,emailAddress,password,typeOfCall;
 
     @Override
@@ -70,6 +75,7 @@ public class OTPVerificationActivity extends Activity {
         pinview = findViewById(R.id.pin_view);
         confirmSignUp = findViewById(R.id.confirmSignup);
         onCloseButton = findViewById(R.id.verificationOtp_back);
+        otpProgressBtn = findViewById(R.id.otpProgressBar);
 
         //get all the data from intent
         phoneNumber = getIntent().getExtras().getString("phone_number");
@@ -85,9 +91,21 @@ public class OTPVerificationActivity extends Activity {
         confirmSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String code = pinview.getText().toString();
-                if(!code.isEmpty()){
-                    verifyCode(code);
+                if (!(LoginActivity.isConnectedToInternet(OTPVerificationActivity.this))) {
+                    showConnectToInternetDialog();
+                }
+                else {
+                    String code = pinview.getText().toString();
+                    if (!code.isEmpty()) {
+                        otpProgressBtn.setVisibility(View.VISIBLE);
+                        onCloseButton.setEnabled(false);
+                        pinview.setEnabled(false);
+                        confirmSignUp.setEnabled(false);
+                        verifyCode(code);
+                    }
+                    else{
+                        Toast.makeText(OTPVerificationActivity.this, "Please enter the one time pin received", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -126,6 +144,9 @@ public class OTPVerificationActivity extends Activity {
             String code = phoneAuthCredential.getSmsCode();
             if(code!=null){
                 pinview.setText(code);
+                onCloseButton.setEnabled(false);
+                pinview.setEnabled(false);
+                confirmSignUp.setEnabled(false);
                 verifyCode(code);
             }
         }
@@ -160,6 +181,9 @@ public class OTPVerificationActivity extends Activity {
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 Toast.makeText(OTPVerificationActivity.this, "Verification Not Completed. Try Again!", Toast.LENGTH_SHORT).show();
                             }
+                            onCloseButton.setEnabled(true);
+                            pinview.setEnabled(true);
+                            confirmSignUp.setEnabled(true);
                         }
                     }
                 });
@@ -170,7 +194,6 @@ public class OTPVerificationActivity extends Activity {
         intent.putExtra("email_address",emailAddress);
         startActivity(intent);
         finish();
-
     }
 
     private void storeNewUserData() {
@@ -184,4 +207,26 @@ public class OTPVerificationActivity extends Activity {
         databaseReference.child(emailAddress).setValue(addNewUser);
 
     }
+
+    private void showConnectToInternetDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(OTPVerificationActivity.this, R.style.MyDialogTheme);
+        builder.setMessage("Please connect to internet to proceed further.")
+                .setCancelable(false)
+                .setPositiveButton("Connect", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS));
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(getApplicationContext(), SignUpScreenActivity.class));
+                        finish();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
 }

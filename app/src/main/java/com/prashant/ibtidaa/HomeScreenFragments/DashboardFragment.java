@@ -29,13 +29,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class DashboardFragment extends Fragment implements EpisodeListAdapter.OnNoteListener {
-    private RecyclerView seasonOneRecycler, seasonTwoRecycler, seasonThreeRecycler;
+    private RecyclerView podcastRecycler, seasonTwoRecycler, seasonThreeRecycler;
     private RecyclerView.Adapter adapter;
     private ImageButton btnSubmit, btnSignUp;
     private BottomNavigationView bottomNavigationView;
     private int currentApiVersion;
 
-    ArrayList<EpisodeListHelper> episodesListSeason1 = new ArrayList<>();
+    ArrayList<EpisodeListHelper> podcastList = new ArrayList<>();
     ArrayList<EpisodeListHelper> episodesListSeason2 = new ArrayList<>();
     ArrayList<EpisodeListHelper> episodesListSeason3 = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class DashboardFragment extends Fragment implements EpisodeListAdapter.On
 
         //Hooks
         btnSubmit = view.findViewById(R.id.btnSubmit);
-        seasonOneRecycler = view.findViewById(R.id.season_one_recycler);
+        podcastRecycler = view.findViewById(R.id.podcast_recycler);
         seasonTwoRecycler = view.findViewById(R.id.season_two_recycler);
         seasonThreeRecycler = view.findViewById(R.id.season_three_recycler);
         bottomNavigationView = view.findViewById(R.id.bottom_navigation);
@@ -130,25 +130,23 @@ public class DashboardFragment extends Fragment implements EpisodeListAdapter.On
         });
 
         //calls to Recyclers
-        seasonOneRecycler(view);
+        podcastRecycler(view);
         seasonTwoRecycler(view);
         seasonThreeRecycler(view);
         return view;
     }
     //Recycler Views Functions
-    private void seasonOneRecycler(View view) {
-        seasonOneRecycler.setHasFixedSize(true);
-        seasonOneRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL, false));
+    private void podcastRecycler(View view) {
+        podcastRecycler.setHasFixedSize(true);
+        podcastRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL, false));
 
         //SEASON 1
-        episodesListSeason1.add(new EpisodeListHelper("Muhabbat Kyun Nahi Karte", "Farhat Ehsaas |Saaz", "https://i.imgur.com/TnHWsAI.jpg"));
-        episodesListSeason1.add(new EpisodeListHelper("Jis Ladki se Soch Humari Milti hai", "Fakhr Abbas । Saaz", "https://i.imgur.com/62gN9ur.jpeg"));
-        episodesListSeason1.add(new EpisodeListHelper("Bichadte Waqt Rona Chahiye Tha", "Fehmi Badayuni | Saaz", "https://i.imgur.com/VK4LfjS.jpg"));
-        episodesListSeason1.add(new EpisodeListHelper("Main Zinda Hoon", "Ahmad Farhad | Saaz", "https://i.imgur.com/cUi3Hbu.jpg"));
-        episodesListSeason1.add(new EpisodeListHelper("Farz Karo", "Ibn-e-Insha | Saaz", "https://i.imgur.com/H3HyJVF.jpg"));
+        podcastList.add(new EpisodeListHelper("Season 1", "Saaz", "https://i.imgur.com/4pILS2t.png"));
+        podcastList.add(new EpisodeListHelper("Season 2", "Saaz, Manik, Mitali and more", "https://i.imgur.com/GgcAnOP.png"));
+        podcastList.add(new EpisodeListHelper("Season 3", "Saaz", "https://i.imgur.com/FrxTj2N.png"));
 
-        adapter = new EpisodeListAdapter(episodesListSeason1,this,"season1");
-        seasonOneRecycler.setAdapter(adapter);
+        adapter = new EpisodeListAdapter(podcastList,this,"podcast");
+        podcastRecycler.setAdapter(adapter);
     }
 
     private void seasonTwoRecycler(View view) {
@@ -193,12 +191,12 @@ public class DashboardFragment extends Fragment implements EpisodeListAdapter.On
     @Override
     public void onClickNote(int position,String tag,View view) {
         switch(tag){
-            case "season1":
-                episodesListSeason1.get(position);
+            case "podcast":
+                podcastList.get(position);
                 Intent intent1 = new Intent(getContext(), MusicPlayer.class);
-                intent1.putExtra("Title",episodesListSeason1.get(position).getTitle());
-                intent1.putExtra("Author",episodesListSeason1.get(position).getAuthor());
-                intent1.putExtra("ImageUrl",episodesListSeason1.get(position).getImageUrl());
+                intent1.putExtra("Title",podcastList.get(position).getTitle());
+                intent1.putExtra("Author",podcastList.get(position).getAuthor());
+                intent1.putExtra("ImageUrl",podcastList.get(position).getImageUrl());
                 startActivity(intent1);
 
                 /*Bundle bundle = new Bundle();

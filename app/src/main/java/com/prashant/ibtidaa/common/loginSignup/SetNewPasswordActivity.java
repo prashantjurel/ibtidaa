@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -19,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,7 +27,7 @@ import com.prashant.ibtidaa.R;
 public class SetNewPasswordActivity extends AppCompatActivity {
 
     private TextInputLayout newPassword, confirmPassword;
-    private Button nextBtn;
+    private MaterialButton nextBtn;
     private AwesomeValidation mAwesomeValidation;
     private LinearLayout progressBar;
 
@@ -58,6 +58,7 @@ public class SetNewPasswordActivity extends AppCompatActivity {
         //Add Validations for text Fields Before Submission
         String regexPassword = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
         mAwesomeValidation.addValidation(this, R.id.newPassword, regexPassword, R.string.err_Password);
+        mAwesomeValidation.addValidation(this,R.id.confirmNewPassword,newPassword.getEditText().getText().toString().trim(),R.string.err_matchPassword);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +78,7 @@ public class SetNewPasswordActivity extends AppCompatActivity {
         String confirmPasswordText = confirmPassword.getEditText().getText().toString().trim();
         String emailAddress = getIntent().getStringExtra("email_address");
 
-        if((mAwesomeValidation.validate())&&(newPasswordText.equals(confirmPasswordText))){
+        if(mAwesomeValidation.validate()){
             progressBar.setVisibility(View.VISIBLE);
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
             databaseReference.child(emailAddress).child("password").setValue(newPasswordText);

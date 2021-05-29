@@ -151,7 +151,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/season_1"
+                            android:text="@string/podcast"
                             android:textColor="@color/white"
                             android:textSize="25sp"
                             android:textStyle="bold" />
@@ -159,7 +159,7 @@
                     </RelativeLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/season_one_recycler"
+                        android:id="@+id/podcast_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 

@@ -236,6 +236,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone"
+                        android:gravity="center"
                         android:orientation="vertical"
                         android:background="@drawable/background_submission_text"
                         android:id="@+id/layout_audio_file_container">
@@ -243,9 +244,8 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:padding="10dp"
                             android:text="@string/upload_audio"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginTop="16dp"
                             android:textColor="@color/white"
                             android:textSize="15sp"
                             android:textStyle="bold" />
@@ -253,21 +253,22 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="16dp"
+                            android:padding="10dp"
                             android:text="@string/upload_audio_description"
                             android:textColor="@color/white"
                             android:textSize="12sp" />
 
-                        <Button
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/browseAudioFile"
-                            android:layout_width="match_parent"
+                            android:layout_width="250dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            android:backgroundTint="@color/yellow"
+                            app:cornerRadius="10dp"
+                            android:padding="10dp"
                             android:text="@string/submit_audio"
                             android:elevation="4dp"
                             android:textAllCaps="false"
-                            android:textColor="@android:color/black"
+                            android:textColor="@color/buttonTextColor"
+                            android:textStyle="bold"
                             android:textSize="12dp"
                             android:textAlignment="center" />
 
@@ -369,21 +370,21 @@
         android:id="@+id/submitDataLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:layout_alignParentBottom="true"
         android:background="#191919"
         android:paddingTop="20dp"
         android:paddingBottom="20dp">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/submitData"
-            android:layout_width="200dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:background="@drawable/background_buttons"
-            android:layout_gravity="center_horizontal"
+            android:padding="10dp"
+            app:cornerRadius="10dp"
             android:text="@string/submit"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/buttonTextColor"
             android:textSize="20dp"
             android:textStyle="bold" />
     </LinearLayout>
