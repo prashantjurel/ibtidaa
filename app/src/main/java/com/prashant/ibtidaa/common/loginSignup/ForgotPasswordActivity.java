@@ -31,8 +31,6 @@ import com.prashant.ibtidaa.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import static com.prashant.ibtidaa.common.loginSignup.LoginActivity.encodeUserEmail;
-
 public class ForgotPasswordActivity extends AppCompatActivity {
 
     private TextInputLayout emailAddress;
@@ -93,8 +91,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
             progressBar.setVisibility(View.VISIBLE);
             //get data
             String emailAddressInput = emailAddress.getEditText().getText().toString().trim();
-            emailAddressInput = encodeUserEmail(emailAddressInput);
-
             //set data in database
             Query checkUserExists = FirebaseDatabase.getInstance().getReference("Users").orderByChild("emailAddress").equalTo(emailAddressInput);
             String finalEmailAddressInput = emailAddressInput;

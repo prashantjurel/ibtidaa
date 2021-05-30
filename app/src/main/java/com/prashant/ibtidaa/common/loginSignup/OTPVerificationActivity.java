@@ -38,7 +38,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.TimeUnit;
 
 import static android.content.ContentValues.TAG;
-import static com.prashant.ibtidaa.common.loginSignup.LoginActivity.encodeUserEmail;
 
 public class OTPVerificationActivity extends Activity {
 
@@ -202,8 +201,6 @@ public class OTPVerificationActivity extends Activity {
     private void storeNewUserData() {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-
-        emailAddress = encodeUserEmail(emailAddress);
 
         UserDataHelperClass addNewUser = new UserDataHelperClass(fullName, emailAddress, phoneNumber,password);
 
