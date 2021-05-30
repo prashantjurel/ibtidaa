@@ -122,9 +122,9 @@ public class SubmitActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (mAwesomeValidation.validate() && (mRadioGroup.getCheckedRadioButtonId() != -1)
                     && isNetworkConnected() && isInternetConnected()) {
-                    final String userid = "imaginedragonwashere@gmail.com";
-                    final String password = "4050pp01";
-                    final String toUserId = "iambenzmarshall@gmail.com";
+                    final String userid = "";
+                    final String password = "";
+                    final String toUserId = "";
                     String msgtosend = "Title: " + title.getText().toString() + "\n\n" +
                             "Written By: " + writtenBy.getText().toString() + "\n\n" +
                             "Full Piece:\n" + fullPiece.getText().toString() + "\n\n" +
