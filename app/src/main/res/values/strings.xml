@@ -111,6 +111,8 @@
     <string name="err_matchPassword">Password did not match</string>
     <string name="loginPassword">Password</string>
     <string name="err_loginPassword">Incorrect Password</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 
 </resources>

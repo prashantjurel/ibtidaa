@@ -31,7 +31,7 @@ public class EpisodeListAdapter extends RecyclerView.Adapter<EpisodeListAdapter.
     public EpisodeListHelperViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new EpisodeListHelperViewHolder(
                 LayoutInflater.from(parent.getContext()).inflate(
-                        R.layout.dashboard_cardview_layout,
+                        R.layout.episode_list_view,
                         parent,
                         false
                 ),mOnNoteListener,tag

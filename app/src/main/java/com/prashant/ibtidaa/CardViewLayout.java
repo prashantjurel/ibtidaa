@@ -1,12 +1,10 @@
 package com.prashant.ibtidaa;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CardViewLayout extends AppCompatActivity {
-    private ImageView kbvLocation;
 
     /* access modifiers changed from: protected */
     public void onCreate(Bundle savedInstanceState) {

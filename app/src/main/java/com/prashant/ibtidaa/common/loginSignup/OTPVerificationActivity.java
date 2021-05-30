@@ -84,9 +84,9 @@ public class OTPVerificationActivity extends Activity {
         password = getIntent().getExtras().getString("password");
         typeOfCall = getIntent().getExtras().getString("typeOfCall");
 
-        phoneNumberView.setText(phoneNumber);
+        phoneNumberView.setText("+91"+phoneNumber);
 
-        sendVerificationCodeToUser(phoneNumber);
+        sendVerificationCodeToUser("+91"+phoneNumber);
 
         confirmSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +146,7 @@ public class OTPVerificationActivity extends Activity {
                 pinview.setText(code);
                 onCloseButton.setEnabled(false);
                 pinview.setEnabled(false);
-                confirmSignUp.setEnabled(false);
+                confirmSignUp.setEnabled(true);
                 verifyCode(code);
             }
         }
@@ -174,7 +174,10 @@ public class OTPVerificationActivity extends Activity {
                             }
                             else{
                                 phoneNumber="+91"+phoneNumber;
-                                storeNewUserData();}
+                                storeNewUserData();
+                                Toast.makeText(OTPVerificationActivity.this, "Account Created", Toast.LENGTH_SHORT).show();
+
+                            }
                         } else {
                             // Sign in failed, display a message and update the UI
                             Log.w(TAG, "signInWithCredential:failure", task.getException());

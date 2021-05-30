@@ -19,6 +19,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.prashant.ibtidaa.HelperClasses.HomeAdapter.EpisodeListAdapter;
 import com.prashant.ibtidaa.HelperClasses.HomeAdapter.EpisodeListHelper;
+import com.prashant.ibtidaa.HelperClasses.HomeAdapter.SeasonListAdapter;
+import com.prashant.ibtidaa.HelperClasses.HomeAdapter.SeasonListHelper;
 import com.prashant.ibtidaa.MusicPlayer.MusicPlayer;
 import com.prashant.ibtidaa.R;
 import com.prashant.ibtidaa.Submission.SubmitActivity;
@@ -28,14 +30,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class DashboardFragment extends Fragment implements EpisodeListAdapter.OnNoteListener {
+public class DashboardFragment extends Fragment implements EpisodeListAdapter.OnNoteListener,SeasonListAdapter.OnNoteListener {
     private RecyclerView podcastRecycler, seasonTwoRecycler, seasonThreeRecycler;
     private RecyclerView.Adapter adapter;
-    private ImageButton btnSubmit, btnSignUp;
+    private ImageButton btnSubmit, btnSignUp, btnEpisodeList;
     private BottomNavigationView bottomNavigationView;
     private int currentApiVersion;
 
-    ArrayList<EpisodeListHelper> podcastList = new ArrayList<>();
+    ArrayList<SeasonListHelper> podcastList = new ArrayList<>();
     ArrayList<EpisodeListHelper> episodesListSeason2 = new ArrayList<>();
     ArrayList<EpisodeListHelper> episodesListSeason3 = new ArrayList<>();
 
@@ -63,7 +65,7 @@ public class DashboardFragment extends Fragment implements EpisodeListAdapter.On
                 }
             });
         }
-        View view = inflater.inflate(R.layout.activity_dash_board, container, false);
+        View view = inflater.inflate(R.layout.fragment_dash_board, container, false);
 
         //Hooks
         btnSubmit = view.findViewById(R.id.btnSubmit);
@@ -141,11 +143,11 @@ public class DashboardFragment extends Fragment implements EpisodeListAdapter.On
         podcastRecycler.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL, false));
 
         //SEASON 1
-        podcastList.add(new EpisodeListHelper("Season 1", "Saaz", "https://i.imgur.com/4pILS2t.png"));
-        podcastList.add(new EpisodeListHelper("Season 2", "Saaz, Manik, Mitali and more", "https://i.imgur.com/GgcAnOP.png"));
-        podcastList.add(new EpisodeListHelper("Season 3", "Saaz", "https://i.imgur.com/FrxTj2N.png"));
+        podcastList.add(new SeasonListHelper("https://i.imgur.com/4pILS2t.png","Saaz","Season 1"));
+        podcastList.add(new SeasonListHelper("https://i.imgur.com/GgcAnOP.png","Saaz, Manik, Mitali and more","Season 2"));
+        podcastList.add(new SeasonListHelper("https://i.imgur.com/FrxTj2N.png","Saaz","Season 3"));
 
-        adapter = new EpisodeListAdapter(podcastList,this,"podcast");
+        adapter = new SeasonListAdapter(podcastList,this,"podcast");
         podcastRecycler.setAdapter(adapter);
     }
 
@@ -193,20 +195,13 @@ public class DashboardFragment extends Fragment implements EpisodeListAdapter.On
         switch(tag){
             case "podcast":
                 podcastList.get(position);
-                Intent intent1 = new Intent(getContext(), MusicPlayer.class);
-                intent1.putExtra("Title",podcastList.get(position).getTitle());
-                intent1.putExtra("Author",podcastList.get(position).getAuthor());
-                intent1.putExtra("ImageUrl",podcastList.get(position).getImageUrl());
-                startActivity(intent1);
-
-                /*Bundle bundle = new Bundle();
-                bundle.putString("Title",episodesListSeason1.get(position).getTitle());
-                bundle.putString("Author",episodesListSeason1.get(position).getAuthor());
-                bundle.putString("ImageUrl",episodesListSeason1.get(position).getImageUrl());
-                Fragment episodeInfoFragment = new EpisodeInfoFragment();
-                episodeInfoFragment.setArguments(bundle);
-                episodeButtomPopUpDialog(view);*/
-
+                Fragment seasonEpisodeListFragment = new SeasonEpisodeListFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("AlbumArt",podcastList.get(position).getSeasonAlbumArt());
+                bundle.putString("Title",podcastList.get(position).getTitle());
+                bundle.putString("Author",podcastList.get(position).getAuthor());
+                seasonEpisodeListFragment.setArguments(bundle);
+                getParentFragmentManager().beginTransaction().add(R.id.fragment_container, seasonEpisodeListFragment).commit();
                 break;
             case "season2":
                 episodesListSeason2.get(position);

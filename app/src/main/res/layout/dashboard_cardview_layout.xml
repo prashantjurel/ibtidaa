@@ -25,19 +25,11 @@
                 app:layout_constraintTop_toTopOf="parent" />
     </androidx.cardview.widget.CardView>
     <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="viewStart"
-        android:textColor="#FAFBFF"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-    <TextView
         android:id="@+id/textAuthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="viewStart"
-        android:textColor="#FAFBFF"
+        android:textColor="#FFFFFF"
         android:textSize="12sp"
         android:textStyle="bold" />
 </LinearLayout>

@@ -8,6 +8,7 @@
         <item name="colorAccent">#609FF1</item>
         <item name="colorOnSurface">@color/white</item>
     </style>
+
     <style name="MyDialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:background">#393939</item>
         <item name="android:textColor">#D1D1D1</item>
@@ -17,17 +18,25 @@
     <style name="BottomSheetDialogeTheme" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
+
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@color/black</item>
     </style>
+
     <style name="Divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">2dp</item>
         <item name="android:background">@drawable/background_divider</item>
     </style>
+
     <style name="error_appearance" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/brightRed</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Widget.AppTheme.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
     </style>
 
 
