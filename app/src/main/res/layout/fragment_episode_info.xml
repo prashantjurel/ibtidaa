@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/bottom_sheet_container"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".HomeScreenFragments.EpisodeInfoFragment"
+    tools:context=".homeScreenFragments.EpisodeInfoFragment"
     android:background="@drawable/background_submission_text"
     android:orientation="vertical">
 

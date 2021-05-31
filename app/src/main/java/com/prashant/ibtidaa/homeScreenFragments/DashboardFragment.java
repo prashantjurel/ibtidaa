@@ -1,4 +1,4 @@
-package com.prashant.ibtidaa.HomeScreenFragments;
+package com.prashant.ibtidaa.homeScreenFragments;
 
 import android.content.Intent;
 import android.os.Build;

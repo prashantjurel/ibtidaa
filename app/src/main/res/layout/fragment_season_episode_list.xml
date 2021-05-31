@@ -7,7 +7,7 @@
     android:background="@color/black"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.Ibtidaa.FullscreenContainer"
-    tools:context=".HomeScreenFragments.SeasonEpisodeListFragment">
+    tools:context=".homeScreenFragments.SeasonEpisodeListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

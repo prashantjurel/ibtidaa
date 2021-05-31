@@ -1,4 +1,4 @@
-package com.prashant.ibtidaa.HomeScreenFragments;
+package com.prashant.ibtidaa.homeScreenFragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -9,10 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.prashant.ibtidaa.HomeScreenFragments.BookmarkFragment;
-import com.prashant.ibtidaa.HomeScreenFragments.DashboardFragment;
-import com.prashant.ibtidaa.HomeScreenFragments.ExploreFragment;
-import com.prashant.ibtidaa.HomeScreenFragments.UserFragment;
+import com.prashant.ibtidaa.homeScreenFragments.BookmarkFragment;
+import com.prashant.ibtidaa.homeScreenFragments.DashboardFragment;
+import com.prashant.ibtidaa.homeScreenFragments.ExploreFragment;
+import com.prashant.ibtidaa.homeScreenFragments.UserFragment;
 
 import org.jetbrains.annotations.NotNull;
 
