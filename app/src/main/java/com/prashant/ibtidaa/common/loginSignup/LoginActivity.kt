@@ -65,6 +65,7 @@ class LoginActivity : AppCompatActivity() {
         emailAddressText.setOnClickListener { mAwesomeValidation.clear() }
         password.setOnClickListener { mAwesomeValidation.clear() }
         passwordText.setOnClickListener { mAwesomeValidation.clear() }
+        signUp.setOnClickListener{ startActivity(Intent(applicationContext,SignUpScreenActivity::class.java)) }
     }
 
     private fun letTheUserLoggedIn() {

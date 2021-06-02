@@ -20,22 +20,16 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputLayout;
-import com.prashant.ibtidaa.HomeActivity;
 import com.prashant.ibtidaa.R;
 
 import org.json.JSONObject;
-
-import java.util.Arrays;
 
 public class SignUpScreenActivity extends AppCompatActivity {
 
@@ -64,8 +58,6 @@ public class SignUpScreenActivity extends AppCompatActivity {
 
 
         //Hooks
-        fbLoginButton = findViewById(R.id.sign_in_button_fb);
-        signInButton = findViewById(R.id.sign_in_button_gmail);
         fullName = findViewById(R.id.signUpFullName);
         emailAddress = findViewById(R.id.signUpEmailAddress);
         password = findViewById(R.id.signUpPassword);
@@ -88,30 +80,6 @@ public class SignUpScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 redirectToOtpVerification();
-            }
-        });
-
-
-        //<------------------------------------FACEBOOK SIGN IN----------------------------------------->
-
-        callbackManager = CallbackManager.Factory.create();
-        fbLoginButton.setPermissions(Arrays.asList("email"));
-        fbLoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Log.d("demo", "login successful");
-                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onCancel() {
-                Log.d("demo", "login cancelled");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Log.d("demo", "login unsuccessful");
             }
         });
 
