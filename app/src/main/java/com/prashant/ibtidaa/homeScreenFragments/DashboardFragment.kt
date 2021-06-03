@@ -5,12 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.RelativeLayout
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.prashant.ibtidaa.HelperClasses.HomeAdapter.EpisodeListAdapter
 import com.prashant.ibtidaa.HelperClasses.HomeAdapter.EpisodeListHelper
@@ -20,84 +19,44 @@ import com.prashant.ibtidaa.MusicPlayer.MusicPlayer
 import com.prashant.ibtidaa.R
 import com.prashant.ibtidaa.Submission.SubmitActivity
 import com.prashant.ibtidaa.common.loginSignup.SignUpScreenActivity
+import com.prashant.ibtidaa.dataBinding.DashboardDataClass
+import com.prashant.ibtidaa.databinding.FragmentDashBoardBinding
 import com.prashant.ibtidaa.observer.DashboardObserver
 import java.util.*
 
+
 class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
     SeasonListAdapter.OnNoteListener {
-    private var podcastRecycler: RecyclerView? = null
-    private var seasonTwoRecycler: RecyclerView? = null
-    private var seasonThreeRecycler: RecyclerView? = null
+
+    private lateinit var binding: FragmentDashBoardBinding
+
     private var adapter: RecyclerView.Adapter<*>? = null
-    private lateinit var btnSubmit: ImageButton
-    private lateinit var btnSignUp: ImageButton
-    private var bottomNavigationView: BottomNavigationView? = null
     private var podcastList = ArrayList<SeasonListHelper>()
     private var episodesListSeason2 = ArrayList<EpisodeListHelper>()
     private var episodesListSeason3 = ArrayList<EpisodeListHelper>()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_dash_board, container, false)
+
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_dash_board, container, false
+        )
+
+        val headingObj = DashboardDataClass("Podcast","Season 2","Season 3")
+        binding.dashboardHeading = headingObj
+        val view = binding.root
+
         lifecycle.addObserver(DashboardObserver())
 
-        //Hooks
-        btnSubmit = view.findViewById(R.id.btnSubmit)
-        podcastRecycler = view.findViewById(R.id.podcast_recycler)
-        seasonTwoRecycler = view.findViewById(R.id.season_two_recycler)
-        seasonThreeRecycler = view.findViewById(R.id.season_three_recycler)
-        bottomNavigationView = view.findViewById(R.id.bottom_navigation)
-        btnSignUp = view.findViewById(R.id.btnSingnUp)
-
-        /*// Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("AlbumArts");
-
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-            }
-        });
-*/
-        //Submit Button CLick Event
-        /* submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
-                        view.getContext(), R.style.BottomSheetDialogTheme);
-
-                View bottomSheetView = LayoutInflater.from(getContext()).inflate(R.layout.activity_submit,
-                        (RelativeLayout)view.findViewById(R.id.bottom_sheet_container));
-
-                bottomSheetDialog.setContentView(bottomSheetView);
-                bottomSheetDialog.show();
-                */
-        /*Fragment fragment = new SubmitFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();*/
-        /*
-            }
-        });*/
-
-        btnSubmit.setOnClickListener {
+        //onClick Functions for buttons
+        binding.btnSubmit.setOnClickListener {
             val intent = Intent(activity, SubmitActivity::class.java)
             startActivity(intent)
         }
-        btnSignUp.setOnClickListener {
+        binding.btnSignup.setOnClickListener {
             val intent = Intent(activity, SignUpScreenActivity::class.java)
             startActivity(intent)
         }
@@ -111,8 +70,8 @@ class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
 
     //Recycler Views Functions
     private fun podcastRecycler(view: View) {
-        podcastRecycler!!.setHasFixedSize(true)
-        podcastRecycler!!.layoutManager =
+        binding.podcastRecycler.setHasFixedSize(true)
+        binding.podcastRecycler.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
 
         //SEASON 1
@@ -126,12 +85,12 @@ class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
         )
         podcastList.add(SeasonListHelper("https://i.imgur.com/FrxTj2N.png", "Saaz", "Season 3"))
         adapter = SeasonListAdapter(podcastList, this, "podcast")
-        podcastRecycler!!.adapter = adapter
+        binding.podcastRecycler.adapter = adapter
     }
 
     private fun seasonTwoRecycler(view: View) {
-        seasonTwoRecycler!!.setHasFixedSize(true)
-        seasonTwoRecycler!!.layoutManager =
+        binding.seasonTwoRecycler.setHasFixedSize(true)
+        binding.seasonTwoRecycler.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
         //SEASON 2
         episodesListSeason2.add(
@@ -205,12 +164,12 @@ class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
             )
         )
         adapter = EpisodeListAdapter(episodesListSeason2, this, "season2")
-        seasonTwoRecycler!!.adapter = adapter
+        binding.seasonTwoRecycler.adapter = adapter
     }
 
     private fun seasonThreeRecycler(view: View) {
-        seasonThreeRecycler!!.setHasFixedSize(true)
-        seasonThreeRecycler!!.layoutManager =
+        binding.seasonThreeRecycler.setHasFixedSize(true)
+        binding.seasonThreeRecycler.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
 
         //Season3
@@ -285,7 +244,7 @@ class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
             )
         )
         adapter = EpisodeListAdapter(episodesListSeason3, this, "season3")
-        seasonThreeRecycler!!.adapter = adapter
+        binding.seasonThreeRecycler.adapter = adapter
     }
 
     override fun onClickNote(position: Int, tag: String, view: View) {
