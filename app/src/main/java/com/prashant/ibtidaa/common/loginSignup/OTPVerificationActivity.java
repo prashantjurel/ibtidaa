@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import com.chaos.view.PinView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
@@ -42,7 +41,6 @@ import static android.content.ContentValues.TAG;
 public class OTPVerificationActivity extends Activity {
 
     private TextView phoneNumberView;
-    private PinView pinview;
     private FirebaseAuth mAuth;
     private String codeBySystem;
     private MaterialButton confirmSignUp;
@@ -71,7 +69,6 @@ public class OTPVerificationActivity extends Activity {
 
         //Hooks
         phoneNumberView = findViewById(R.id.phoneNumberAtOtpVerify);
-        pinview = findViewById(R.id.pin_view);
         confirmSignUp = findViewById(R.id.confirmSignup);
         onCloseButton = findViewById(R.id.verificationOtp_back);
         otpProgressBtn = findViewById(R.id.otpProgressBar);
@@ -94,11 +91,10 @@ public class OTPVerificationActivity extends Activity {
                     showConnectToInternetDialog();
                 }
                 else {
-                    String code = pinview.getText().toString();
+                    String code = phoneNumberView.getText().toString();
                     if (!code.isEmpty()) {
                         otpProgressBtn.setVisibility(View.VISIBLE);
                         onCloseButton.setEnabled(false);
-                        pinview.setEnabled(false);
                         confirmSignUp.setEnabled(false);
                         verifyCode(code);
                     }
@@ -142,9 +138,7 @@ public class OTPVerificationActivity extends Activity {
         public void onVerificationCompleted(@NonNull @NotNull PhoneAuthCredential phoneAuthCredential) {
             String code = phoneAuthCredential.getSmsCode();
             if(code!=null){
-                pinview.setText(code);
                 onCloseButton.setEnabled(false);
-                pinview.setEnabled(false);
                 confirmSignUp.setEnabled(true);
                 verifyCode(code);
             }
@@ -184,7 +178,6 @@ public class OTPVerificationActivity extends Activity {
                                 Toast.makeText(OTPVerificationActivity.this, "Verification Not Completed. Try Again!", Toast.LENGTH_SHORT).show();
                             }
                             onCloseButton.setEnabled(true);
-                            pinview.setEnabled(true);
                             confirmSignUp.setEnabled(true);
                         }
                     }

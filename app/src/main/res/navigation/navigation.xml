@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.prashant.ibtidaa.homeScreenFragments.DashboardFragment"
+        android:label="DashboardFragment"
+        tools:layout="@layout/fragment_dash_board">
+        <action
+            android:id="@+id/action_dashboardFragment_to_seasonEpisodeListFragment"
+            app:destination="@id/seasonEpisodeListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/seasonEpisodeListFragment"
+        android:name="com.prashant.ibtidaa.homeScreenFragments.SeasonEpisodeListFragment"
+        android:label="fragment_season_episode_list"
+        tools:layout="@layout/fragment_season_episode_list" />
+</navigation>

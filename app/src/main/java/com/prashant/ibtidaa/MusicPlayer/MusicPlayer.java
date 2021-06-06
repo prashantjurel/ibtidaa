@@ -18,8 +18,6 @@ import com.prashant.ibtidaa.HomeActivity;
 import com.prashant.ibtidaa.R;
 import com.squareup.picasso.Picasso;
 
-import io.alterac.blurkit.BlurLayout;
-
 public class MusicPlayer extends AppCompatActivity {
 
     private ImageView imagePlayPause, imageAlbumArt,imageBack,imageAlbumArtBackground;
@@ -27,14 +25,12 @@ public class MusicPlayer extends AppCompatActivity {
     private SeekBar playerSeekBar;
     private MediaPlayer mediaPlayer;
     private Handler handler = new Handler();
-    private BlurLayout blurLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_music_player);
-        blurLayout = findViewById(R.id.blurLayout);
 
         //Hookd
         imageAlbumArt = findViewById(R.id.imageAlbumArt);
@@ -161,16 +157,5 @@ public class MusicPlayer extends AppCompatActivity {
         return timerString;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        blurLayout.startBlur();
-    }
-
-    @Override
-    protected void onStop() {
-        blurLayout.pauseBlur();
-        super.onStop();
-    }
 
 }

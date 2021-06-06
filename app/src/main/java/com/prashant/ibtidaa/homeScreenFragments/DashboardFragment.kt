@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.prashant.ibtidaa.HelperClasses.HomeAdapter.EpisodeListAdapter
 import com.prashant.ibtidaa.HelperClasses.HomeAdapter.EpisodeListHelper
 import com.prashant.ibtidaa.HelperClasses.HomeAdapter.SeasonListAdapter
-import com.prashant.ibtidaa.HelperClasses.HomeAdapter.SeasonListHelper
 import com.prashant.ibtidaa.MusicPlayer.MusicPlayer
 import com.prashant.ibtidaa.R
 import com.prashant.ibtidaa.Submission.SubmitActivity
@@ -29,9 +29,9 @@ class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
     SeasonListAdapter.OnNoteListener {
 
     private lateinit var binding: FragmentDashBoardBinding
+    private lateinit var dashboardViewModel: DashboardViewModel
 
     private var adapter: RecyclerView.Adapter<*>? = null
-    private var podcastList = ArrayList<SeasonListHelper>()
     private var episodesListSeason2 = ArrayList<EpisodeListHelper>()
     private var episodesListSeason3 = ArrayList<EpisodeListHelper>()
 
@@ -39,7 +39,7 @@ class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_dash_board, container, false
@@ -50,6 +50,7 @@ class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
         val view = binding.root
 
         lifecycle.addObserver(DashboardObserver())
+        dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
 
         //onClick Functions for buttons
         binding.btnSubmit.setOnClickListener {
@@ -73,18 +74,8 @@ class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
         binding.podcastRecycler.setHasFixedSize(true)
         binding.podcastRecycler.layoutManager =
             LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
-
-        //SEASON 1
-        podcastList.add(SeasonListHelper("https://i.imgur.com/4pILS2t.png", "Saaz", "Season 1"))
-        podcastList.add(
-            SeasonListHelper(
-                "https://i.imgur.com/GgcAnOP.png",
-                "Saaz, Manik, Mitali and more",
-                "Season 2"
-            )
-        )
-        podcastList.add(SeasonListHelper("https://i.imgur.com/FrxTj2N.png", "Saaz", "Season 3"))
-        adapter = SeasonListAdapter(podcastList, this, "podcast")
+        dashboardViewModel.addPodcastList()
+        adapter = SeasonListAdapter(dashboardViewModel.podcastList, this, "podcast")
         binding.podcastRecycler.adapter = adapter
     }
 
@@ -250,12 +241,12 @@ class DashboardFragment : Fragment(), EpisodeListAdapter.OnNoteListener,
     override fun onClickNote(position: Int, tag: String, view: View) {
         when (tag) {
             "podcast" -> {
-                podcastList[position]
+                dashboardViewModel.podcastList[position]
                 val seasonEpisodeListFragment: Fragment = SeasonEpisodeListFragment()
                 val bundle = Bundle()
-                bundle.putString("AlbumArt", podcastList[position].seasonAlbumArt)
-                bundle.putString("Title", podcastList[position].title)
-                bundle.putString("Author", podcastList[position].author)
+                bundle.putString("AlbumArt", dashboardViewModel.podcastList[position].seasonAlbumArt)
+                bundle.putString("Title", dashboardViewModel.podcastList[position].title)
+                bundle.putString("Author", dashboardViewModel.podcastList[position].author)
                 seasonEpisodeListFragment.arguments = bundle
                 parentFragmentManager.beginTransaction()
                     .add(R.id.fragment_container, seasonEpisodeListFragment).commit()
