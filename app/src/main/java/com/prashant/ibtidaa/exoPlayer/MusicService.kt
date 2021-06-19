@@ -16,6 +16,8 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import com.prashant.ibtidaa.exoPlayer.callbacks.MusicPlaybackPreparer
 import com.prashant.ibtidaa.exoPlayer.callbacks.MusicPlayerEventListener
 import com.prashant.ibtidaa.exoPlayer.callbacks.MusicPlayerNotificationListener
+import com.prashant.ibtidaa.other.Constants.MEDIA_ROOT_ID
+import com.prashant.ibtidaa.other.Constants.NETWORK_ERROR
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import javax.inject.Inject
@@ -152,6 +154,7 @@ class MusicService : MediaBrowserServiceCompat() {
                             isPlayerInitialized = true
                         }
                     } else {
+                        mediaSession.sendSessionEvent(NETWORK_ERROR, null)
                         result.sendResult(null)
                     }
                 }

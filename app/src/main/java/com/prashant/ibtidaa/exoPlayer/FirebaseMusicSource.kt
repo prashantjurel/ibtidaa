@@ -18,12 +18,12 @@ class FirebaseMusicSource @Inject constructor(
     private val musicDatabase: EpisodeDatabase
 ){
 
-    var songs = emptyList<MediaMetadataCompat>()
+    var episodes = emptyList<MediaMetadataCompat>()
 
     suspend fun fetchMediaData() = withContext(Dispatchers.IO) {
         state = State.STATE_INITIALIZING
         val allSongs = musicDatabase.getAllEpisodes()
-        songs = allSongs.map { song ->
+        episodes = allSongs.map { song ->
             MediaMetadataCompat.Builder()
                 .putString(METADATA_KEY_ARTIST, song.author)
                 .putString(METADATA_KEY_MEDIA_ID, song.id)
@@ -41,7 +41,7 @@ class FirebaseMusicSource @Inject constructor(
 
     fun asMediaSource(dataSourceFactory: DefaultDataSourceFactory): ConcatenatingMediaSource {
         val concatenatingMediaSource = ConcatenatingMediaSource()
-        songs.forEach { song ->
+        episodes.forEach { song ->
             val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
                 .createMediaSource(song.getString(METADATA_KEY_MEDIA_URI).toUri())
             concatenatingMediaSource.addMediaSource(mediaSource)
@@ -49,7 +49,7 @@ class FirebaseMusicSource @Inject constructor(
         return concatenatingMediaSource
     }
 
-    fun asMediaItems() = songs.map { song ->
+    fun asMediaItems() = episodes.map { song ->
         val desc = MediaDescriptionCompat.Builder()
             .setMediaUri(song.getString(METADATA_KEY_MEDIA_URI).toUri())
             .setTitle(song.description.title)
