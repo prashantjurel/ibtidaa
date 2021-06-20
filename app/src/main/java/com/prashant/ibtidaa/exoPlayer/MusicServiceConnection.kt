@@ -2,7 +2,6 @@ package com.prashant.ibtidaa.exoPlayer
 
 import android.content.ComponentName
 import android.content.Context
-import android.media.browse.MediaBrowser
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
@@ -60,7 +59,7 @@ class MusicServiceConnection(
 
         override fun onConnected() {
             mediaController = MediaControllerCompat(context, mediaBrowser.sessionToken).apply {
-                registerCallback(MediaContollerCallback())
+                registerCallback(MediaControllerCallback())
             }
             _isConnected.postValue(Event(Resource.success(true)))
         }
@@ -78,7 +77,7 @@ class MusicServiceConnection(
         }
     }
 
-    private inner class MediaContollerCallback : MediaControllerCompat.Callback() {
+    private inner class MediaControllerCallback : MediaControllerCompat.Callback() {
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             _playbackState.postValue(state)
