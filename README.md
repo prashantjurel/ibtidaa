@@ -15,3 +15,12 @@ These are not the final renders of the app, the app may look different or comple
 
 # Development 
 The development of the ibtidaa app is still in progress, the app was primarily built on java, aside from developing the app, we are also migrating it to android kotlin to use the full potiential of the android framework and to make it future proof.
+
+# TODO
+1. Implementing MVVM model to the app to make app loosely coupled
+2. Fully migration to kotlin
+3. Playing audio files in minimized state
+4. Getting playlist episodes based on the season
+5. Updation to forgot password logic
+6. Modification of submission data logic
+7. More UI changes
