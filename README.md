@@ -24,3 +24,4 @@ The development of the ibtidaa app is still in progress, the app was primarily b
 5. Updation to forgot password logic
 6. Modification of submission data logic
 7. More UI changes
+8. Serialization
