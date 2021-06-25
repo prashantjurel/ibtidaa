@@ -145,7 +145,6 @@ class LoginActivity : AppCompatActivity() {
         signUp.isEnabled = true
     }
 
-
     companion object {
         @JvmStatic
         fun encodeUserEmail(userEmail: String): String {

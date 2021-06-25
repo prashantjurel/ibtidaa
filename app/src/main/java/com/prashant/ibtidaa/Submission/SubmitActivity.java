@@ -1,11 +1,16 @@
 package com.prashant.ibtidaa.Submission;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -18,10 +23,14 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.basgeekball.awesomevalidation.AwesomeValidation;
 import com.basgeekball.awesomevalidation.ValidationStyle;
+import com.google.android.material.button.MaterialButton;
 import com.prashant.ibtidaa.HomeActivity;
 import com.prashant.ibtidaa.R;
 
@@ -38,20 +47,21 @@ import javax.mail.internet.MimeMessage;
 public class SubmitActivity extends AppCompatActivity {
     private Button btnSend;
     private ImageView backBtnSubmit;
-    private RadioButton reciteYes,reciteNo;
+    private RadioButton reciteYes, reciteNo;
     private RadioGroup mRadioGroup;
-    private EditText title,writtenBy,fullPiece,submitBy,idHandle;
+    private EditText title, writtenBy, fullPiece, submitBy, idHandle;
     private LinearLayout frameLayout;
     private AwesomeValidation mAwesomeValidation;
     private String wantToRecite;
+    private MaterialButton uploadAudioBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Build.VERSION.SDK_INT < 16) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-        else{
+        } else {
             View decorView = getWindow().getDecorView();
             int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
             decorView.setSystemUiVisibility(uiOptions);
@@ -72,7 +82,8 @@ public class SubmitActivity extends AppCompatActivity {
         mRadioGroup = findViewById(R.id.recite_select);
         reciteYes = findViewById(R.id.recite_yes);
         reciteNo = findViewById(R.id.recite_no);
-        frameLayout=findViewById(R.id.layout_audio_file_container);
+        frameLayout = findViewById(R.id.layout_audio_file_container);
+        uploadAudioBtn = findViewById(R.id.browseAudioFile);
 
         //Initialization Of Validation before Submission
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.COLORATION);
@@ -103,7 +114,7 @@ public class SubmitActivity extends AppCompatActivity {
         });
 
         //Animation on Radio Button
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fadeout_recite_radio);
+        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadeout_recite_radio);
 
 
         //Submission Page Back Button Action
@@ -115,13 +126,32 @@ public class SubmitActivity extends AppCompatActivity {
             }
         });
 
+        ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri uri) {
+                       frameLayout.setVisibility(View.GONE);
+                        String test = uri.toString() ;
+                        Log.i("Test.activity","testing");
+
+                    }
+                });
+
+        //Intent to upload audio File
+        uploadAudioBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mGetContent.launch("audio/*");
+            }
+        });
+
 
         //Submit Button (Sending data to mail)
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mAwesomeValidation.validate() && (mRadioGroup.getCheckedRadioButtonId() != -1)
-                    && isNetworkConnected() && isInternetConnected()) {
+                        && isNetworkConnected() && isInternetConnected()) {
                     final String userid = "";
                     final String password = "";
                     final String toUserId = "";
@@ -164,19 +194,15 @@ public class SubmitActivity extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 
-                }
-                else{
-                    if(!(mAwesomeValidation.validate())){
+                } else {
+                    if (!(mAwesomeValidation.validate())) {
                         Toast.makeText(getApplicationContext(), "Please check input data once", Toast.LENGTH_LONG).show();
-                    }
-                    else if(mRadioGroup.getCheckedRadioButtonId() == -1){
+                    } else if (mRadioGroup.getCheckedRadioButtonId() == -1) {
                         reciteYes.startAnimation(animation);
                         Toast.makeText(getApplicationContext(), "Please select any one on recite", Toast.LENGTH_LONG).show();
-                    }
-                    else if(!(isNetworkConnected()) || !(isInternetConnected())){
+                    } else if (!(isNetworkConnected()) || !(isInternetConnected())) {
                         Toast.makeText(getApplicationContext(), "Please check your internet Connection", Toast.LENGTH_LONG).show();
-                    }
-                    else{
+                    } else {
                         Toast.makeText(getApplicationContext(), "Please try again later", Toast.LENGTH_LONG).show();
                     }
 
@@ -193,6 +219,7 @@ public class SubmitActivity extends AppCompatActivity {
         ConnectivityManager cm = (ConnectivityManager) SubmitActivity.this.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
     }
+
     public boolean isInternetConnected() {
         try {
             String command = "ping -c 1 google.com";
@@ -202,4 +229,14 @@ public class SubmitActivity extends AppCompatActivity {
         }
     }
 
+    private String queryName(ContentResolver resolver, Uri uri) {
+        Cursor returnCursor =
+                resolver.query(uri, null, null, null, null);
+        assert returnCursor != null;
+        int nameIndex = returnCursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        returnCursor.moveToFirst();
+        String name = returnCursor.getString(nameIndex);
+        returnCursor.close();
+        return name;
+    }
 }
