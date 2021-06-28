@@ -272,6 +272,15 @@
                             android:textSize="12dp"
                             android:textAlignment="center" />
 
+                        <TextView
+                            android:id="@+id/browseAudioFileName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:visibility="gone"
+                            android:textColor="@color/white"
+                           />
+
                     </LinearLayout>
 
                     <View

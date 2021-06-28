@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -33,26 +34,34 @@ import com.basgeekball.awesomevalidation.ValidationStyle;
 import com.google.android.material.button.MaterialButton;
 import com.prashant.ibtidaa.HomeActivity;
 import com.prashant.ibtidaa.R;
+import com.prashant.ibtidaa.common.RealPathUtil;
 
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 public class SubmitActivity extends AppCompatActivity {
     private Button btnSend;
     private ImageView backBtnSubmit;
     private RadioButton reciteYes, reciteNo;
+    private TextView uploadAudioTextName;
     private RadioGroup mRadioGroup;
     private EditText title, writtenBy, fullPiece, submitBy, idHandle;
     private LinearLayout frameLayout;
     private AwesomeValidation mAwesomeValidation;
-    private String wantToRecite;
+    private String wantToRecite, filePath, fileName;
     private MaterialButton uploadAudioBtn;
 
     @Override
@@ -84,6 +93,7 @@ public class SubmitActivity extends AppCompatActivity {
         reciteNo = findViewById(R.id.recite_no);
         frameLayout = findViewById(R.id.layout_audio_file_container);
         uploadAudioBtn = findViewById(R.id.browseAudioFile);
+        uploadAudioTextName = findViewById(R.id.browseAudioFileName);
 
         //Initialization Of Validation before Submission
         mAwesomeValidation = new AwesomeValidation(ValidationStyle.COLORATION);
@@ -130,9 +140,11 @@ public class SubmitActivity extends AppCompatActivity {
                 new ActivityResultCallback<Uri>() {
                     @Override
                     public void onActivityResult(Uri uri) {
-                       frameLayout.setVisibility(View.GONE);
-                        String test = uri.toString() ;
-                        Log.i("Test.activity","testing");
+                        fileName = queryName(getContentResolver(), uri);
+                        filePath = RealPathUtil.getRealPath(getApplicationContext(),uri);
+                        uploadAudioTextName.setText(fileName);
+                        uploadAudioTextName.setVisibility(View.VISIBLE);
+                        Log.i("Test.activity", "testing");
 
                     }
                 });
@@ -151,55 +163,73 @@ public class SubmitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (mAwesomeValidation.validate() && (mRadioGroup.getCheckedRadioButtonId() != -1)
-                        && isNetworkConnected() && isInternetConnected()) {
-                    final String userid = "";
-                    final String password = "";
-                    final String toUserId = "";
-                    String msgtosend = "Title: " + title.getText().toString() + "\n\n" +
-                            "Written By: " + writtenBy.getText().toString() + "\n\n" +
-                            "Full Piece:\n" + fullPiece.getText().toString() + "\n\n" +
-                            "Wants To Recite:\n" + wantToRecite + "\n\n" +
-                            "Submitted By: " + submitBy.getText().toString() + "\n\n" +
-                            "InstaHandle: " + idHandle.getText().toString() + "\n\n" +
-                            "Regards, \nIbitidaa App";
+                        && /*isNetworkConnected() && isInternetConnected() &&*/ (uploadAudioTextName.getText() != "")) {
+
+                    final String username = "imaginedragonwashere@gmail.com";
+                    final String password = "4050pp01";
+
                     Properties props = new Properties();
                     props.put("mail.smtp.auth", "true");
                     props.put("mail.smtp.starttls.enable", "true");
                     props.put("mail.smtp.host", "smtp.gmail.com");
                     props.put("mail.smtp.port", "587");
 
+                    String msgToSend = "Title: " + title.getText().toString() + "\n\n" +
+                            "Written By: " + writtenBy.getText().toString() + "\n\n" +
+                            "Full Piece:\n" + fullPiece.getText().toString() + "\n\n" +
+                            "Wants To Recite:\n" + wantToRecite + "\n\n" +
+                            "Submitted By: " + submitBy.getText().toString() + "\n\n" +
+                            "InstaHandle: " + idHandle.getText().toString() + "\n\n" +
+                            "Regards, \nIbtidaa App";
+
                     Session session = Session.getInstance(props,
                             new javax.mail.Authenticator() {
-                                @Override
                                 protected PasswordAuthentication getPasswordAuthentication() {
-                                    return new PasswordAuthentication(userid, password);
+                                    return new PasswordAuthentication(username, password);
                                 }
                             });
                     try {
                         Message message = new MimeMessage(session);
-                        message.setFrom(new InternetAddress(userid));
-                        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toUserId.toString()));
-                        message.setSubject("New Submission Request On Ibitidaa App");
-                        message.setText(msgtosend);
+                        message.setFrom(new InternetAddress(username));
+                        message.setRecipients(Message.RecipientType.TO,
+                                InternetAddress.parse("iambenzmarshall@gmail.com"));
+                        message.setSubject("New Submission Request On Ibtidaa App");
+                        message.setText(msgToSend);
+
+                        MimeBodyPart messageBodyPart = new MimeBodyPart();
+
+                        Multipart multipart = new MimeMultipart();
+
+                        messageBodyPart = new MimeBodyPart();
+                        String attachedFileName = fileName;
+                        DataSource source = new FileDataSource(filePath);
+                        messageBodyPart.setDataHandler(new DataHandler(source));
+                        messageBodyPart.setFileName(attachedFileName);
+                        multipart.addBodyPart(messageBodyPart);
+
+                        message.setContent(multipart);
+
                         Transport.send(message);
                         title.setText(null);
                         writtenBy.setText(null);
                         fullPiece.setText(null);
                         submitBy.setText(null);
                         idHandle.setText(null);
+                        uploadAudioTextName.setText(null);
                         mRadioGroup.clearCheck();
                         frameLayout.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Submission Successful", Toast.LENGTH_LONG).show();
+
                     } catch (MessagingException e) {
                         throw new RuntimeException(e);
                     }
-
                 } else {
                     if (!(mAwesomeValidation.validate())) {
                         Toast.makeText(getApplicationContext(), "Please check input data once", Toast.LENGTH_LONG).show();
                     } else if (mRadioGroup.getCheckedRadioButtonId() == -1) {
-                        reciteYes.startAnimation(animation);
                         Toast.makeText(getApplicationContext(), "Please select any one on recite", Toast.LENGTH_LONG).show();
+                    } else if (uploadAudioTextName.getText().length() == 0 || uploadAudioTextName.getText() == null) {
+                        Toast.makeText(getApplicationContext(), "Please upload the audio file", Toast.LENGTH_LONG).show();
                     } else if (!(isNetworkConnected()) || !(isInternetConnected())) {
                         Toast.makeText(getApplicationContext(), "Please check your internet Connection", Toast.LENGTH_LONG).show();
                     } else {
@@ -229,6 +259,7 @@ public class SubmitActivity extends AppCompatActivity {
         }
     }
 
+    //Query to get uploaded audio file Name
     private String queryName(ContentResolver resolver, Uri uri) {
         Cursor returnCursor =
                 resolver.query(uri, null, null, null, null);
